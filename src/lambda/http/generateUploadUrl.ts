@@ -1,6 +1,6 @@
 import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
-import {getUploadUrl, updateTodoUrl} from '../../businessLogic/todos'
+import {getUploadUrl, updateTodoUrl} from '../../businessLogic/books'
 
 
 

@@ -1,35 +1,37 @@
 import * as AWS  from 'aws-sdk'
 process.env._X_AMZN_TRACE_ID = '_X_AMZN_TRACE_ID'
 
-import * as AWSXRay from 'aws-xray-sdk'
+// import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
-import { UpdateTodoRequest } from '../requests/UpdateTodoRequest'
+import { UpdateBookRequest } from '../requests/UpdateBookRequest'
 
-const XAWS = AWSXRay.captureAWS(AWS)
+// const XAWS = AWSXRay.captureAWS(AWS)
 
 import { createLogger } from '../utils/logger'
 const logger = createLogger('dataLayer')
 
 
-import { TodoItem } from '../models/TodoItem'
-import { S3 } from 'aws-sdk'
+import { BookItem } from '../models/BookItem'
+import { NetworkAuthenticationRequire } from 'http-errors'
+// import { S3 } from 'aws-sdk'
 
-export class TodosAccess {
+export class BooksAccess {
 
   constructor(
-    private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
-    private readonly todosTable = process.env.TODOS_TABLE,
+    private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({region: 'eu-central-1', endpoint: 'http://localhost:8000'}),
+    private readonly booksTable = process.env.BOOKS_TABLE,
     private readonly indexName = process.env.INDEX_NAME,
-    private readonly s3: S3 =  new XAWS.S3({
-      signatureVersion: 'v4'
-    })) {
+    // private readonly s3: S3 =  new AWS.S3({
+    //   signatureVersion: 'v4'
+    // })
+    ) {
   }
 
-  async getAllTodos(userId): Promise<TodoItem[]> {
-    logger.info('Getting all Todos')
+  async getAllBooks(userId: string): Promise<BookItem[]> {
+    logger.info('Getting all Books')
 
     const result = await this.docClient.query({
-      TableName: this.todosTable,
+      TableName: this.booksTable,
       IndexName: this.indexName,
       KeyConditionExpression: 'userId = :userId',
       ExpressionAttributeValues: {
@@ -38,63 +40,67 @@ export class TodosAccess {
       }).promise();
 
     const items = result.Items
-    logger.info('Todos where served', {
+    logger.info('Books where served', {
       // Additional information stored with a log statement
       userId
     })
-    return items as TodoItem[]
+    return items as BookItem[]
   }
 
-  async createTodo(todo: TodoItem): Promise<TodoItem> {
+  async createBook(book: BookItem): Promise<BookItem> {
     await this.docClient.put({
-      TableName: this.todosTable,
-      Item: todo
+      TableName: this.booksTable,
+      Item: book
     }).promise()
 
-    logger.info('Todo was succesfully created')
-    return todo
+    logger.info('Book was succesfully created')
+    return book
   }
 
-  async updateTodo(update: UpdateTodoRequest, userId: string, todoId: string ): Promise<String> {
+  async updateBook(update: UpdateBookRequest, userId: string, bookId: string ): Promise<String> {
 
-    const {name,dueDate,done} = update
+    const {name,topic, unread, coverUrl, author} = update
     
     const params = {
-      TableName: this.todosTable,
+      TableName: this.booksTable,
       Key:                  
-        {todoId,
+        {bookId,
         userId},
         
       
-      UpdateExpression: "set #name=:n, #dueDate=:dD, #done=:d",
+      UpdateExpression: "set #name=:n, #author=:a, #topic=:t, #unread=:u, #coverUrl=:c",
       
       ExpressionAttributeValues : {
         ':n': name,
-        ':dD': dueDate,
-        ':d': done
+        ':a': author,
+        ':t': topic,
+        ':u': unread,
+        ':c': coverUrl,
+  
       }
-      
-      
       ,
       ExpressionAttributeNames:{
         '#name': 'name',
-        '#dueDate': 'dueDate',
-        '#done': 'done'
+        '#author': 'author',
+        '#topic': 'topic',
+        '#unread': 'unread',
+        '#coverUrl': 'coverUrl',
+  
       },
       ReturnValues:"UPDATED_NEW"
   
   };
 
-  logger.info('Item is getting updated ...', {
+  logger.info('Book is getting updated ...', {
     // Additional information stored with a log statement
     userId
   })
 
   await this.docClient.update(params, function(err) {
     if (err) {
-      logger.info("Unable to update item. ", {message: err.message});
+      logger.info("Unable to update book. ", {message: err.message});
     } else {
-      logger.info("UpdateItem succeeded:");
+      logger.info("Update Book succeeded:");
     }
 }).promise();
 

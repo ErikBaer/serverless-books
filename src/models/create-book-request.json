@@ -7,21 +7,25 @@
             "type": "string",
             "pattern": "^(?!\\s*$).+"
         },
+        "author": {
+            "type": "string",
+            "pattern": "^(?!\\s*$).+"
+        },
         "topic": 
         {"type": "string",
         "pattern": "^(?!\\s*$).+"
         },
+        "unread":
+        {"type": "boolean"
+        },
         "coverUrl": {
             "type": "string",
-            "pattern": "^(?!\\s*$).+"},
-        "amazonUrl": {
-            "type": "string",
-            "pattern": "^(?!\\s*$).+"
-        }
+            "pattern": "^(?!\\s*$).+"}
     },
     "required": [
         "name",
-        "topic"
+        "topic",
+        "unread"
     ],
     "additionalProperties": false
   }

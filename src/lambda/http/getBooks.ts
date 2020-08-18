@@ -1,5 +1,8 @@
 import 'source-map-support/register'
-// import {getAllTodos} from '../../businessLogic/todos'
+import {getAllBooks} from '../../businessLogic/books'
+import { createLogger } from '../../utils/logger'
+const logger = createLogger('dataLayer')
+
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
@@ -11,9 +14,12 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 //   const split = authorization.split(' ')
 //   const jwtToken = split[1]
 
-// const todos = await getAllBooks(jwtToken)
+const jwtToken: string = '12345'
 
-const books = ['1','2','3']
+logger.info('Get all books now!')
+const books = await getAllBooks(jwtToken)
+
+
 const bookEvent = event
 console.log(bookEvent)
 

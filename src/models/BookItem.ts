@@ -3,8 +3,8 @@ export interface BookItem {
   bookId: string
   createdAt: string
   name: string
+  author: string
   topic: string
   unread: boolean
   coverUrl?: string
-  amazonUrl?: string
 }
