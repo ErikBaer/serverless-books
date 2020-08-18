@@ -1,0 +1,5 @@
+//- make it offline
+- change models to represent data-structure
+- change basic names/infrastructure in serverless-yml
+- follow data flow from req to res / change attributes & find new tasks
+- create AuthO app and incorporate certificate

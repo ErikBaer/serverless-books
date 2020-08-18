@@ -5,6 +5,8 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
+  - serverless-offline
+  - serverless-dynamodb-local
 
 provider:
   name: aws
@@ -26,6 +28,8 @@ provider:
 
 custom:
 
+  serverless-offline:
+    port: 3003
 
   
 
