@@ -64,18 +64,18 @@ export async function deleteBook(
 }
 
 
-export function getUploadUrl(todoId) {
+export function getUploadUrl(bookId) {
   
-  const signedUrl = booksAccess.getUploadUrl(todoId)
+  const signedUrl = booksAccess.getUploadUrl(bookId)
   
   return signedUrl
 
 }
 
-export async function updateTodoUrl(todoId: string, jwtToken){
+export async function updateBookUrl(bookId: string, jwtToken){
   const userId = parseUserId(jwtToken)
-  return await booksAccess.updateTodoUrl(
+  return await booksAccess.updateBookUrl(
       userId,
-      todoId
+      bookId
   )
 }

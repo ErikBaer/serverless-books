@@ -12,7 +12,7 @@ const logger = createLogger('dataLayer')
 
 
 import { BookItem } from '../models/BookItem'
-// import { S3 } from 'aws-sdk'
+import { S3 } from 'aws-sdk'
 
 export class BooksAccess {
 
@@ -20,9 +20,9 @@ export class BooksAccess {
     private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({region: 'eu-central-1', endpoint: 'http://localhost:8000'}),
     private readonly booksTable = process.env.BOOKS_TABLE,
     private readonly indexName = process.env.INDEX_NAME,
-    // private readonly s3: S3 =  new AWS.S3({
-    //   signatureVersion: 'v4'
-    // })
+    private readonly s3: S3 =  new AWS.S3({
+      signatureVersion: 'v4'
+    })
     ) {
   }
 
@@ -126,52 +126,52 @@ return
   }
 
 
-  getUploadUrl(todoId: string) {
-    const bucketName = process.env.ATTACHMENTS_S3_BUCKET
+  getUploadUrl(bookId: string) {
+    const bucketName = process.env.COVER_S3_BUCKET
     const urlExpiration = process.env.urlExpiration
   
     const signedUrl = this.s3.getSignedUrl('putObject', {
       Bucket: bucketName,
-      Key: todoId,
+      Key: bookId,
       Expires: urlExpiration
     })
     logger.info("SignedUrl succefully created")
     return signedUrl
   }
 
-  async updateTodoUrl(userId: string, todoId: string ): Promise<String> {
-    const bucketName = process.env.ATTACHMENTS_S3_BUCKET
-    const attachmentUrl = `https://${bucketName}.s3.amazonaws.com/${todoId}`
+  async updateBookUrl(userId: string, bookId: string ): Promise<String> {
+    const bucketName = process.env.COVER_S3_BUCKET
+    const coverUrl = `https://${bucketName}.s3.amazonaws.com/${bookId}`
     
     const params = {
-      TableName: this.todosTable,
+      TableName: this.booksTable,
       Key:                  
-        {todoId,
+        {bookId,
         userId},
         
       
-      UpdateExpression: "set #attachmentUrl = :a",
+      UpdateExpression: "set #coverUrl = :c",
       
       ExpressionAttributeValues : {
-        ':a': attachmentUrl
+        ':c': coverUrl
       }
       
       
       ,
       ExpressionAttributeNames:{
-        '#attachmentUrl': 'attachmentUrl'
+        '#coverUrl': 'coverUrl'
       },
       ReturnValues:"UPDATED_NEW"
   
   };
 
-  logger.info("Updating the attachmentUrl...", {todoId, userId})
+  logger.info("Updating the coverUrl...", {bookId, userId})
 
   await this.docClient.update(params, function(err) {
     if (err) {
-      logger.info("Unable to update item", {todoId, userId, message: err.message});
+      logger.info("Unable to update item", {bookId, userId, message: err.message});
     } else {
-      logger.info("UpdateItem succeeded:",{todoId, userId});
+      logger.info("UpdateItem succeeded:",{bookId, userId});
     }
 }).promise();
 
