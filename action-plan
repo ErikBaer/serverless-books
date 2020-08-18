@@ -1,8 +1,0 @@
-//- make it offline
-//- change models to represent data-structure
-//- change basic names/infrastructure in serverless-yml
-- follow data flow from req to res / change attributes & find new tasks
-- create AuthO app and incorporate certificate // unstubb-Auth & token-processing
-- think / decide about index(es), z.B. author/unread/createdat o.A.
-
--- create upload cover functionality (signedurl etc)
