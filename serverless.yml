@@ -16,10 +16,10 @@ provider:
   region: ${opt:region, 'eu-central-1'}
 
   environment:
-    Books_TABLE: books-${self:provider.stage}
+    BOOKS_TABLE: books-${self:provider.stage}
     ATTACHMENTS_S3_BUCKET: sls-baer-books-cover-${self:provider.stage}
     urlExpiration: 3600
-    INDEX_NAME: CREATED_INDEX
+    INDEX_NAME: TOPIC_INDEX
 
   tracing:
     lambda: true
@@ -64,75 +64,75 @@ functions:
         Resource: "*"
 
   
-  CreateBook:
-    handler: src/lambda/http/createBook.handler
-    events:
-      - http:
-          method: post
-          path: books
-          cors: true
-          authorizer: Auth
-          request:
-            schema:
-              application/json: ${file(src/models/create-book-request.json)}
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:PutItem
-        Resource: "*"
+  # CreateBook:
+  #   handler: src/lambda/http/createBook.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: books
+  #         cors: true
+  #         authorizer: Auth
+  #         request:
+  #           schema:
+  #             application/json: ${file(src/models/create-book-request.json)}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:PutItem
+  #       Resource: "*"
     
 
   
-  UpdateBook:
-    handler: src/lambda/http/updateBook.handler
-    events:
-      - http:
-          method: patch
-          path: books/{bookId}
-          cors: true
-          authorizer: Auth
-          request:
-            schema:
-              application/json: ${file(src/models/update-book-request.json)}
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:UpdateItem
-        Resource: "*"
+  # UpdateBook:
+  #   handler: src/lambda/http/updateBook.handler
+  #   events:
+  #     - http:
+  #         method: patch
+  #         path: books/{bookId}
+  #         cors: true
+  #         authorizer: Auth
+  #         request:
+  #           schema:
+  #             application/json: ${file(src/models/update-book-request.json)}
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:UpdateItem
+  #       Resource: "*"
   
-  DeleteBook :
-    handler: src/lambda/http/deleteBook.handler
-    events:
-      - http:
-          method: delete
-          path: books/{bookId}
-          cors: true
-          authorizer: Auth
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - dynamodb:DeleteItem
-        Resource: "*"
+  # DeleteBook :
+  #   handler: src/lambda/http/deleteBook.handler
+  #   events:
+  #     - http:
+  #         method: delete
+  #         path: books/{bookId}
+  #         cors: true
+  #         authorizer: Auth
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:DeleteItem
+  #       Resource: "*"
 
   
-  UploadUrl:
-    handler: src/lambda/http/generateUploadUrl.handler
-    events:
-      - http:
-          method: post
-          path: books/{bookId}/attachment
-          cors: true
-          authorizer: Auth
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - s3:PutObject
-          - s3:GetObject
-        Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*
-      - Effect: Allow
-        Action:
-          - dynamodb:UpdateItem
-        Resource: "*"
+  # UploadUrl:
+  #   handler: src/lambda/http/generateUploadUrl.handler
+  #   events:
+  #     - http:
+  #         method: post
+  #         path: books/{bookId}/attachment
+  #         cors: true
+  #         authorizer: Auth
+  #   iamRoleStatements:
+  #     - Effect: Allow
+  #       Action:
+  #         - s3:PutObject
+  #         - s3:GetObject
+  #       Resource: arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*
+  #     - Effect: Allow
+  #       Action:
+  #         - dynamodb:UpdateItem
+  #       Resource: "*"
       
   
 
@@ -148,7 +148,7 @@ resources:
             AttributeType: S
           - AttributeName: bookId
             AttributeType: S
-          - AttributeName: createdAt
+          - AttributeName: topic
             AttributeType: S
           
         KeySchema:
@@ -157,13 +157,13 @@ resources:
           - AttributeName: bookId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.bookS_TABLE}
+        TableName: ${self:provider.environment.BOOKS_TABLE}
         LocalSecondaryIndexes:
           - IndexName: ${self:provider.environment.INDEX_NAME}
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
-              - AttributeName: createdAt
+              - AttributeName: topic
                 KeyType: RANGE
             Projection:
               ProjectionType: ALL

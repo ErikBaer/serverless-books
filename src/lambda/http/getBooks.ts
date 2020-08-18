@@ -1,5 +1,5 @@
 import 'source-map-support/register'
-import {getAllTodos} from '../../businessLogic/todos'
+// import {getAllTodos} from '../../businessLogic/todos'
 
 import { APIGatewayProxyEvent, APIGatewayProxyResult, APIGatewayProxyHandler } from 'aws-lambda'
 
@@ -7,12 +7,15 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   // TODO: Get all TODO items for a current user
 
 
-const authorization = event.headers.Authorization
-  const split = authorization.split(' ')
-  const jwtToken = split[1]
+// const authorization = event.headers.Authorization
+//   const split = authorization.split(' ')
+//   const jwtToken = split[1]
 
-const todos = await getAllTodos(jwtToken)
+// const todos = await getAllBooks(jwtToken)
 
+const books = ['1','2','3']
+const bookEvent = event
+console.log(bookEvent)
 
   return {
     statusCode: 200,
@@ -21,7 +24,7 @@ const todos = await getAllTodos(jwtToken)
       'Access-Control-Allow-Credentials': true
     },
     body: JSON.stringify({
-      items: todos
+      items: books
     })
   }
 }
