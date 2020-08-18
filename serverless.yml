@@ -5,14 +5,12 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-plugin-tracing
-  - serverless-offline
-  - serverless-dynamodb-local
 
 provider:
   name: aws
-  runtime: nodejs10.x
+  runtime: nodejs12.x
 
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'staging'}
   region: ${opt:region, 'eu-central-1'}
 
   environment:
@@ -27,10 +25,6 @@ provider:
 
 
 custom:
-
-  serverless-offline:
-    port: 3003
-
   
 
   dynamodb:

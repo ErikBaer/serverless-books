@@ -23,8 +23,6 @@ export async function createBook(
   const userId = parseUserId(jwtToken)
   
 
-  
-
   return await booksAccess.createBook({
     bookId,
     userId,

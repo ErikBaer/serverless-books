@@ -3,7 +3,7 @@
     "title": "updateBook",
     "type": "object",
     "properties": {
-        "name": {
+        "title": {
             "type": "string",
             "pattern": "^(?!\\s*$).+"
         },
@@ -16,8 +16,7 @@
             "pattern": "^(?!\\s*$).+"
         },
         "unread": {
-            "type": "string",
-            "pattern": "^(?!\\s*$).+"}
+            "type": "boolean"}
       }
     ,
     "additionalProperties": false

@@ -17,7 +17,7 @@ import { S3 } from 'aws-sdk'
 export class BooksAccess {
 
   constructor(
-    private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient({region: 'eu-central-1', endpoint: 'http://localhost:8000'}),
+    private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient(),
     private readonly booksTable = process.env.BOOKS_TABLE,
     private readonly indexName = process.env.INDEX_NAME,
     private readonly s3: S3 =  new XAWS.S3({
@@ -29,14 +29,22 @@ export class BooksAccess {
   async getAllBooks(userId: string): Promise<BookItem[]> {
     logger.info('Getting all Books')
 
-    const result = await this.docClient.query({
-      TableName: this.booksTable,
-      IndexName: this.indexName,
-      KeyConditionExpression: 'userId = :userId',
-      ExpressionAttributeValues: {
-          ':userId': userId
-      }
-      }).promise();
+    let result
+
+    try {
+       result = await this.docClient.query({
+        TableName: this.booksTable,
+        IndexName: this.indexName,
+        KeyConditionExpression: 'userId = :userId',
+        ExpressionAttributeValues: {
+            ':userId': userId
+        }
+        }).promise();
+
+    } catch (err) {
+      logger.info('Something went wrong', {message: err.message})
+    }
+    
 
     const items = result.Items
     logger.info('Books where served', {

@@ -12,11 +12,10 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   
   
 
-  // const authorization = event.headers.Authorization
-  // const split = authorization.split(' ')
-  // const jwtToken = split[1]
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
 
-  const jwtToken = '12345'
 
   const bookId = event.pathParameters.bookId
 

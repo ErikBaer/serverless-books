@@ -10,13 +10,10 @@ import {createBook} from '../../businessLogic/books'
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const newBook: CreateBookRequest = JSON.parse(event.body)
 
-  // Book: Implement creating a new Book item
 
-  // const authorization = event.headers.Authorization
-  // const split = authorization.split(' ')
-  // const jwtToken = split[1]
-
-  const jwtToken = '12345'
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
 
   logger.info('Create a new book now!')
 

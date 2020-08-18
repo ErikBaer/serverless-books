@@ -7,5 +7,4 @@ export interface CreateBookRequest {
   author: string
   topic: string
   unread: boolean
-  coverUrl?: string
 }

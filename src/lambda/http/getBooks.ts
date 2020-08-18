@@ -10,11 +10,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   // TODO: Get all TODO items for a current user
 
 
-// const authorization = event.headers.Authorization
-//   const split = authorization.split(' ')
-//   const jwtToken = split[1]
-
-const jwtToken: string = '12345'
+const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
 
 logger.info('Get all books now!')
 const books = await getAllBooks(jwtToken)

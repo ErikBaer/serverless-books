@@ -11,11 +11,9 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const bookId = event.pathParameters.bookId
   const updatedBook: UpdateBookRequest = JSON.parse(event.body)
 
-  // const authorization = event.headers.Authorization
-  // const split = authorization.split(' ')
-  // const jwtToken = split[1]
-
-  const jwtToken: string = '12345'
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
 
   logger.info('Update a specific book now!')
 

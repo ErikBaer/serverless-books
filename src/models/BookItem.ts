@@ -6,5 +6,5 @@ export interface BookItem {
   author: string
   topic: string
   unread: boolean
-  coverUrl?: string
+  coverUrl: string
 }

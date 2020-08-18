@@ -6,11 +6,9 @@ import {deleteBook} from '../../businessLogic/books'
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   const bookId = event.pathParameters.bookId
 
-  // const authorization = event.headers.Authorization
-  // const split = authorization.split(' ')
-  // const jwtToken = split[1]
-
-  const jwtToken: string = '12345'
+  const authorization = event.headers.Authorization
+  const split = authorization.split(' ')
+  const jwtToken = split[1]
  
   await deleteBook(bookId, jwtToken)
 

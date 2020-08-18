@@ -17,15 +17,13 @@
         },
         "unread":
         {"type": "boolean"
-        },
-        "coverUrl": {
-            "type": "string",
-            "pattern": "^(?!\\s*$).+"}
+        }
     },
     "required": [
-        "name",
-        "topic",
-        "unread"
+        "title",
+        "author",
+        "unread",
+         "topic"
     ],
     "additionalProperties": false
   }
