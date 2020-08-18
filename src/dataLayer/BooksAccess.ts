@@ -136,7 +136,7 @@ return
 
   getUploadUrl(bookId: string) {
     const bucketName = process.env.COVER_S3_BUCKET
-    const urlExpiration = process.env.urlExpiration
+    const urlExpiration = 3600
   
     const signedUrl = this.s3.getSignedUrl('putObject', {
       Bucket: bucketName,
