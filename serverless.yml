@@ -17,7 +17,7 @@ provider:
 
   environment:
     BOOKS_TABLE: books-${self:provider.stage}
-    ATTACHMENTS_S3_BUCKET: sls-baer-books-cover-${self:provider.stage}
+    COVER_S3_BUCKET: sls-baer-books-cover-${self:provider.stage}
     urlExpiration: 3600
     INDEX_NAME: TOPIC_INDEX
 
@@ -168,24 +168,24 @@ resources:
             Projection:
               ProjectionType: ALL
 
-    # AttachmentsBucket:
-    #   Type: AWS::S3::Bucket
-    #   Properties:
-    #     BucketName: ${self:provider.environment.ATTACHMENTS_S3_BUCKET}
-    #     CorsConfiguration:
-    #       CorsRules:
-    #         -
-    #           AllowedOrigins:
-    #             - '*'
-    #           AllowedHeaders:
-    #             - '*'
-    #           AllowedMethods:
-    #             - GET
-    #             - PUT
-    #             - POST
-    #             - DELETE
-    #             - HEAD
-    #           MaxAge: 3000
+    CoverBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.COVER_S3_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            -
+              AllowedOrigins:
+                - '*'
+              AllowedHeaders:
+                - '*'
+              AllowedMethods:
+                - GET
+                - PUT
+                - POST
+                - DELETE
+                - HEAD
+              MaxAge: 3000
 
     BucketPolicy:
       Type: AWS::S3::BucketPolicy
@@ -198,6 +198,6 @@ resources:
               Effect: Allow
               Principal: '*'
               Action: 's3:GetObject'
-              Resource: 'arn:aws:s3:::${self:provider.environment.ATTACHMENTS_S3_BUCKET}/*'
-        Bucket: !Ref AttachmentsBucket
+              Resource: 'arn:aws:s3:::${self:provider.environment.COVER_S3_BUCKET}/*'
+        Bucket: !Ref CoverBucket
     
