@@ -46,17 +46,11 @@ export async function updateBook(
   const userId = parseUserId(jwtToken)
 
 
-  let coverUrl = ''
-
-  updateBookRequest.coverUrl ? coverUrl = updateBookRequest.coverUrl : coverUrl = ''
-
-
 return await booksAccess.updateBook({
   name: updateBookRequest.name,
   author: updateBookRequest.author,
   topic: updateBookRequest.topic,
-  unread: updateBookRequest.unread,
-  coverUrl: updateBookRequest.coverUrl
+  unread: updateBookRequest.unread
 },
 userId, bookId)
 

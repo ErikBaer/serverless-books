@@ -6,5 +6,4 @@ export interface UpdateBookRequest {
   author: string
   topic: string
   unread: boolean
-  coverUrl: string
 }

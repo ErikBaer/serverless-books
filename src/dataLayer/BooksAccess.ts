@@ -68,14 +68,13 @@ export class BooksAccess {
         userId},
         
       
-      UpdateExpression: "set #name=:n, #author=:a, #topic=:t, #unread=:u, #coverUrl=:c",
+      UpdateExpression: "set #name=:n, #author=:a, #topic=:t, #unread=:u",
       
       ExpressionAttributeValues : {
         ':n': name,
         ':a': author,
         ':t': topic,
-        ':u': unread,
-        ':c': coverUrl,
+        ':u': unread
   
       }
       ,
@@ -84,7 +83,7 @@ export class BooksAccess {
         '#author': 'author',
         '#topic': 'topic',
         '#unread': 'unread',
-        '#coverUrl': 'coverUrl',
+    
   
       },
       ReturnValues:"UPDATED_NEW"

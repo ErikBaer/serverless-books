@@ -3,5 +3,4 @@ export interface BookUpdate {
   author: string
   topic: string
   unread: boolean
-  coverUrl: string
 }

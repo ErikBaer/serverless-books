@@ -17,9 +17,6 @@
         },
         "unread": {
             "type": "string",
-            "pattern": "^(?!\\s*$).+"},
-        "coverUrl": {
-            "type": "string",
             "pattern": "^(?!\\s*$).+"}
       }
     ,
