@@ -1,11 +1,11 @@
 import * as AWS  from 'aws-sdk'
 process.env._X_AMZN_TRACE_ID = '_X_AMZN_TRACE_ID'
 
-// import * as AWSXRay from 'aws-xray-sdk'
+import * as AWSXRay from 'aws-xray-sdk'
 import { DocumentClient } from 'aws-sdk/clients/dynamodb'
 import { UpdateBookRequest } from '../requests/UpdateBookRequest'
 
-// const XAWS = AWSXRay.captureAWS(AWS)
+const XAWS = AWSXRay.captureAWS(AWS)
 
 import { createLogger } from '../utils/logger'
 const logger = createLogger('dataLayer')
@@ -17,10 +17,10 @@ import { S3 } from 'aws-sdk'
 export class BooksAccess {
 
   constructor(
-    private readonly docClient: DocumentClient = new AWS.DynamoDB.DocumentClient({region: 'eu-central-1', endpoint: 'http://localhost:8000'}),
+    private readonly docClient: DocumentClient = new XAWS.DynamoDB.DocumentClient({region: 'eu-central-1', endpoint: 'http://localhost:8000'}),
     private readonly booksTable = process.env.BOOKS_TABLE,
     private readonly indexName = process.env.INDEX_NAME,
-    private readonly s3: S3 =  new AWS.S3({
+    private readonly s3: S3 =  new XAWS.S3({
       signatureVersion: 'v4'
     })
     ) {
