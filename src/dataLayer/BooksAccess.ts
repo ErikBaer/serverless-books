@@ -105,21 +105,21 @@ export class BooksAccess {
 return 
 }
 
-  async deleteTodo (todoId: string, userId:string) {
+  async deleteBook (bookId: string, userId:string) {
     
     const params = {
-      TableName : this.todosTable,
+      TableName : this.booksTable,
       Key:                  
-      {todoId,
-      userId},
+      {bookId,
+      userId}, 
     }
     
     
     await this.docClient.delete(params, function(err) {
       if (err) {
-        logger.info("Unable to delete item. ", {todoId, userId, message: err.message});
+        logger.info("Unable to delete book. ", {bookId, userId, message: err.message});
       } else {
-        logger.info("DeleteItem succeeded:");
+        logger.info("Deleting Book succeeded:");
       }
   }).promise();
   

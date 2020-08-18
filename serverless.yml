@@ -100,19 +100,19 @@ functions:
           - dynamodb:UpdateItem
         Resource: "*"
   
-  # DeleteBook :
-  #   handler: src/lambda/http/deleteBook.handler
-  #   events:
-  #     - http:
-  #         method: delete
-  #         path: books/{bookId}
-  #         cors: true
-  #         authorizer: Auth
-  #   iamRoleStatements:
-  #     - Effect: Allow
-  #       Action:
-  #         - dynamodb:DeleteItem
-  #       Resource: "*"
+  DeleteBook :
+    handler: src/lambda/http/deleteBook.handler
+    events:
+      - http:
+          method: delete
+          path: books/{bookId}
+          cors: true
+          authorizer: Auth
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:DeleteItem
+        Resource: "*"
 
   
   # UploadUrl:

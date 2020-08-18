@@ -54,13 +54,13 @@ userId, bookId)
   }
 
 
-export async function deleteTodo(
-  todoId: string, jwtToken: string
+export async function deleteBook(
+  bookId: string, jwtToken: string
 ) {
   const userId = parseUserId(jwtToken)
   
 
-  return await booksAccess.deleteTodo(todoId, userId)
+  return await booksAccess.deleteBook(bookId, userId)
 }
 
 
