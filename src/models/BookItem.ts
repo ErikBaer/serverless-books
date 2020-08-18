@@ -2,7 +2,7 @@ export interface BookItem {
   userId: string
   bookId: string
   createdAt: string
-  name: string
+  title: string
   author: string
   topic: string
   unread: boolean

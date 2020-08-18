@@ -12,7 +12,6 @@ const logger = createLogger('dataLayer')
 
 
 import { BookItem } from '../models/BookItem'
-import { NetworkAuthenticationRequire } from 'http-errors'
 // import { S3 } from 'aws-sdk'
 
 export class BooksAccess {
@@ -59,7 +58,7 @@ export class BooksAccess {
 
   async updateBook(update: UpdateBookRequest, userId: string, bookId: string ): Promise<String> {
 
-    const {name,topic, unread, coverUrl, author} = update
+    const {title,topic, unread, author} = update
     
     const params = {
       TableName: this.booksTable,
@@ -68,18 +67,18 @@ export class BooksAccess {
         userId},
         
       
-      UpdateExpression: "set #name=:n, #author=:a, #topic=:t, #unread=:u",
+      UpdateExpression: "set #title=:ti, #author=:a, #topic=:to, #unread=:u",
       
       ExpressionAttributeValues : {
-        ':n': name,
+        ':ti': title,
         ':a': author,
-        ':t': topic,
+        ':to': topic,
         ':u': unread
   
       }
       ,
       ExpressionAttributeNames:{
-        '#name': 'name',
+        '#title': 'title',
         '#author': 'author',
         '#topic': 'topic',
         '#unread': 'unread',

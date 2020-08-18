@@ -1,5 +1,5 @@
 export interface BookUpdate {
-  name: string
+  title: string
   author: string
   topic: string
   unread: boolean

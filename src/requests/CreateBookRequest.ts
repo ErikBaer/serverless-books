@@ -3,7 +3,7 @@
  */
 export interface CreateBookRequest {
 
-  name: string
+  title: string
   author: string
   topic: string
   unread: boolean

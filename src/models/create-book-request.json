@@ -3,7 +3,7 @@
     "title": "createBook",
     "type": "object",
     "properties": {
-        "name": {
+        "title": {
             "type": "string",
             "pattern": "^(?!\\s*$).+"
         },

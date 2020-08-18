@@ -22,21 +22,18 @@ export async function createBook(
   const bookId = uuid.v4()
   const userId = parseUserId(jwtToken)
   
-  let coverUrl = ''
 
-
-  createBookRequest.coverUrl ? coverUrl = createBookRequest.coverUrl : coverUrl = ''
   
 
   return await booksAccess.createBook({
     bookId,
     userId,
     createdAt: new Date().toISOString(),
-    name: createBookRequest.name,
+    title: createBookRequest.title,
     author: createBookRequest.author,
     topic: createBookRequest.topic,
     unread: createBookRequest.unread,
-    coverUrl: coverUrl,
+    coverUrl: ''
   })
 }
 
@@ -47,7 +44,7 @@ export async function updateBook(
 
 
 return await booksAccess.updateBook({
-  name: updateBookRequest.name,
+  title: updateBookRequest.title,
   author: updateBookRequest.author,
   topic: updateBookRequest.topic,
   unread: updateBookRequest.unread
