@@ -1,9 +1,10 @@
-export interface TodoItem {
+export interface BookItem {
   userId: string
-  todoId: string
+  bookId: string
   createdAt: string
   name: string
-  dueDate: string
-  done: boolean
-  attachmentUrl?: string
+  topic: string
+  unread: boolean
+  coverUrl?: string
+  amazonUrl?: string
 }

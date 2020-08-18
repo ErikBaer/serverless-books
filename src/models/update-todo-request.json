@@ -1,20 +1,24 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "my-type",
+    "title": "updateBook",
     "type": "object",
     "properties": {
         "name": {
             "type": "string",
             "pattern": "^(?!\\s*$).+"
         },
-        "dueDate": {
+        "unread": {
             "type": "string",
             "pattern": "^(?!\\s*$).+"},
-        "done": {
-            "type": "boolean"
+        "coverUrl": {
+            "type": "string",
+            "pattern": "^(?!\\s*$).+"},
+        "amazonUrl": {
+            "type": "string",
+            "pattern": "^(?!\\s*$).+"
         }
       }
     ,
-    "required": ["name", "dueDate", "done"],
+    "required": ["name", "unread"],
     "additionalProperties": false
   }

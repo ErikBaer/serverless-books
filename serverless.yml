@@ -1,5 +1,5 @@
 service:
-  name: serverless-todo-app
+  name: serverless-books-app
 
 plugins:
   - serverless-webpack
@@ -12,12 +12,12 @@ provider:
   name: aws
   runtime: nodejs10.x
 
-  stage: ${opt:stage, 'fin'}
+  stage: ${opt:stage, 'dev'}
   region: ${opt:region, 'eu-central-1'}
 
   environment:
-    TODOS_TABLE: TODOS-${self:provider.stage}
-    ATTACHMENTS_S3_BUCKET: sls-udagram-baer-attachments-${self:provider.stage}
+    Books_TABLE: books-${self:provider.stage}
+    ATTACHMENTS_S3_BUCKET: sls-baer-books-cover-${self:provider.stage}
     urlExpiration: 3600
     INDEX_NAME: CREATED_INDEX
 
@@ -48,13 +48,13 @@ functions:
   Auth:
     handler: src/lambda/auth/auth0Authorizer.handler
 
-  # TODO: Configure this function
-  GetTodos:
-    handler: src/lambda/http/getTodos.handler
+ 
+  GetBooks:
+    handler: src/lambda/http/getBooks.handler
     events:
       - http:
           method: get
-          path: todos
+          path: books
           cors: true
           authorizer: Auth
     iamRoleStatements:
@@ -63,18 +63,18 @@ functions:
           - dynamodb:Query
         Resource: "*"
 
-  # TODO: Configure this function
-  CreateTodo:
-    handler: src/lambda/http/createTodo.handler
+  
+  CreateBook:
+    handler: src/lambda/http/createBook.handler
     events:
       - http:
           method: post
-          path: todos
+          path: books
           cors: true
           authorizer: Auth
           request:
             schema:
-              application/json: ${file(src/models/create-todo-request.json)}
+              application/json: ${file(src/models/create-book-request.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
@@ -82,30 +82,30 @@ functions:
         Resource: "*"
     
 
-  # TODO: Configure this function
-  UpdateTodo:
-    handler: src/lambda/http/updateTodo.handler
+  
+  UpdateBook:
+    handler: src/lambda/http/updateBook.handler
     events:
       - http:
           method: patch
-          path: todos/{todoId}
+          path: books/{bookId}
           cors: true
           authorizer: Auth
           request:
             schema:
-              application/json: ${file(src/models/update-todo-request.json)}
+              application/json: ${file(src/models/update-book-request.json)}
     iamRoleStatements:
       - Effect: Allow
         Action:
           - dynamodb:UpdateItem
         Resource: "*"
-  # TODO: Configure this function
-  DeleteTodo:
-    handler: src/lambda/http/deleteTodo.handler
+  
+  DeleteBook :
+    handler: src/lambda/http/deleteBook.handler
     events:
       - http:
           method: delete
-          path: todos/{todoId}
+          path: books/{bookId}
           cors: true
           authorizer: Auth
     iamRoleStatements:
@@ -114,13 +114,13 @@ functions:
           - dynamodb:DeleteItem
         Resource: "*"
 
-  # TODO: Configure this function
+  
   UploadUrl:
     handler: src/lambda/http/generateUploadUrl.handler
     events:
       - http:
           method: post
-          path: todos/{todoId}/attachment
+          path: books/{bookId}/attachment
           cors: true
           authorizer: Auth
     iamRoleStatements:
@@ -138,15 +138,15 @@ functions:
 
 resources:
   Resources:
-    # TODO: Add any necessary AWS resources
+   
 
-    TodosDynamoDBTable:
+    BooksDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
         AttributeDefinitions:
           - AttributeName: userId
             AttributeType: S
-          - AttributeName: todoId
+          - AttributeName: bookId
             AttributeType: S
           - AttributeName: createdAt
             AttributeType: S
@@ -154,10 +154,10 @@ resources:
         KeySchema:
           - AttributeName: userId
             KeyType: HASH
-          - AttributeName: todoId
+          - AttributeName: bookId
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
-        TableName: ${self:provider.environment.TODOS_TABLE}
+        TableName: ${self:provider.environment.bookS_TABLE}
         LocalSecondaryIndexes:
           - IndexName: ${self:provider.environment.INDEX_NAME}
             KeySchema:
